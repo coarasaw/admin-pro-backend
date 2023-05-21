@@ -8,25 +8,28 @@ const { dbConnection } = require('./database/config');
 // Crear el servidor de express
 const app = express();
 
-//Configurar CORS
-app.use(cors());
+// Configurar CORS
+app.use( cors() );
 
-//Base de datos
+// Lectura y parseo del body
+app.use( express.json() );
+
+// Base de datos
 dbConnection();
 
-console.log( process.env );
 
 // Rutas
-app.get('/', (req,res) => {
-    res.json({
-        ok:true,
-        msq:'Hola Mundo'
-    });
-})
+app.use( '/api/usuarios', require('./routes/usuarios') );
+app.use( '/api/login', require('./routes/auth') );
+
+
+
 app.listen( process.env.PORT, () => {
     console.log('Servidor corriendo en puerto ' + process.env.PORT );
 });
 
+//Ejecutar servidor
+//npm run start:dev
 
 //Nombre de usuario: mean_user
 //Contraseña:oDEoXfkcUGxC8Wtk
